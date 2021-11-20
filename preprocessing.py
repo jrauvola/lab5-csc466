@@ -1,4 +1,3 @@
-from typing import overload
 import matplotlib.pyplot as plt
 import numpy as np
 from numpy.core.defchararray import count
@@ -324,42 +323,44 @@ def preprocessing(stopwords):
     print("Time to get frequency matrix: " + str(end_time - start_time))
 
 
-    # #start time
-    # start_time = time.time()
-    # vectors, overall_tf_idf = tf_idf(all_words_frequency, vectors)
-    # #end time
-    # end_time = time.time()
-    # print("Time to get tf_idf: " + str(end_time - start_time))
-    # #turn overall_tf_idf into numpy array
-    # overall_tf_idf = np.asarray(overall_tf_idf, dtype=np.float32)
+    #start time
+    start_time = time.time()
+    vectors, overall_tf_idf = tf_idf(all_words_frequency, vectors)
+    #end time
+    end_time = time.time()
+    print("Time to get tf_idf: " + str(end_time - start_time))
+    #turn overall_tf_idf into numpy array
+    overall_tf_idf = np.asarray(overall_tf_idf, dtype=np.float32)
+    #wite overall_tf_idf to csv file as a dataframe
+    # pd.DataFrame(overall_tf_idf).to_csv("overall_tf_idf_" + stopword_type + "_" + str(stemming) + ".csv")
     
-
-    # #start time
-    # start_time = time.time()
-    # #get cosine similarity
-    # overall_cosine_similarities, vectors = get_cosine_similarity(vectors, overall_tf_idf)
-    # overall_cosine_similarities = np.asarray(overall_cosine_similarities, dtype=np.float32)
-
-    # #end time
-    # end_time = time.time()
-    # print("Time to get cosine similarity: " + str(end_time - start_time))
-    # #write overall_cosine_similarities to csv file
-    # pd.DataFrame(overall_cosine_similarities).to_csv("overall_cosine_similarities_" + stopword_type + "_" + str(stemming) + ".csv")
 
     #start time
     start_time = time.time()
-    #all_words_frequency as np array
-    all_words_frequency = np.asarray(list(all_words_frequency.values()), dtype=np.float32)
-    overall_frequency_matrix = np.asarray(overall_frequency_matrix, dtype=np.float32)
-    #get okapi
-    okapi_similarities, vectors = get_okapi_similarity(vectors, all_words_frequency, average_length, overall_frequency_matrix)
-    #okapi similarities as np array
-    okapi_similarities = np.asarray(okapi_similarities, dtype=np.float32)
+    #get cosine similarity
+    overall_cosine_similarities, vectors = get_cosine_similarity(vectors, overall_tf_idf)
+    overall_cosine_similarities = np.asarray(overall_cosine_similarities, dtype=np.float32)
+
     #end time
     end_time = time.time()
-    print("Time to get okapi similarity: " + str(end_time - start_time))
-    #write okapi similarities to csv file
-    pd.DataFrame(okapi_similarities).to_csv("okapi_similarities_" + stopword_type + "_" + str(stemming) + ".csv")
+    print("Time to get cosine similarity: " + str(end_time - start_time))
+    #write overall_cosine_similarities to csv file
+    pd.DataFrame(overall_cosine_similarities).to_csv("overall_cosine_similarities_" + stopword_type + "_" + str(stemming) + ".csv")
+
+    # #start time
+    # start_time = time.time()
+    # #all_words_frequency as np array
+    # all_words_frequency = np.asarray(list(all_words_frequency.values()), dtype=np.float32)
+    # overall_frequency_matrix = np.asarray(overall_frequency_matrix, dtype=np.float32)
+    # #get okapi
+    # okapi_similarities, vectors = get_okapi_similarity(vectors, all_words_frequency, average_length, overall_frequency_matrix)
+    # #okapi similarities as np array
+    # okapi_similarities = np.asarray(okapi_similarities, dtype=np.float32)
+    # #end time
+    # end_time = time.time()
+    # print("Time to get okapi similarity: " + str(end_time - start_time))
+    # #write okapi similarities to csv file
+    # pd.DataFrame(okapi_similarities).to_csv("okapi_similarities_" + stopword_type + "_" + str(stemming) + ".csv")
 
 
 
