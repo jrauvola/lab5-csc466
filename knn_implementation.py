@@ -97,11 +97,24 @@ def print_results(data, author):
         misses.append(FN)
         strikes.append(FP)
         TN = total - T - FN - FP
-        p = TP / (TP + FP)
+
+        if (TP + FP) == 0:
+            p = 0
+        else:
+            p = TP / (TP + FP)
         precision.append(p)
-        r = TP / (TP + FN)
+
+        if (TP + FN) == 0:
+            r = 0
+        else:
+            r = TP / (TP + FN)
         recall.append(r)
-        fmeasure.append(2 * (p * r) / (p + r))
+
+        if (p + r) == 0:
+            f = 0
+        else:
+            f = 2 * (p * r) / (p + r)
+        fmeasure.append(f)
     
     df = pd.DataFrame({"Author": author, "Hits": hits, "Misses": misses, "Strikes": strikes, "Precision": precision, "Recall": recall, "F-Measure": fmeasure})
     df = df.sort_values(by = ['F-Measure'], ascending=False)
@@ -136,8 +149,6 @@ def generate_knn(stopword_stemming):
 
     class_labels = D[D.columns[-1]].value_counts().to_dict()
 
-    k = 2
-
     records, data, result = classifier_knn(D, k, is_numeric, class_labels)
     matrix_fin = []
 
@@ -150,7 +161,7 @@ def generate_knn(stopword_stemming):
     print_results(lst, authors)
 
 def generate_outputs(stopword_stemming):
-    with open(stopword_stemming[0] + "_" + stopword_stemming[2] + "_" + str(stopword_stemming[3]) + "_k=" + str(stopword_stemming[1]) + ".csv", 'w') as f:
+    with open(stopword_stemming[0] + "_" + stopword_stemming[2] + "_" + str(stopword_stemming[3]) + "_k=" + str(stopword_stemming[1]) + ".txt", 'w') as f:
         with redirect_stdout(f):
             generate_knn(stopword_stemming)
 
@@ -165,7 +176,7 @@ if __name__ == "__main__":
     #merge stopword_type and stemming into one list list of tuples list comprehension
     stopword_stemming = [(words[b], k_list[z], stopword_type[i], stemming[j]) for b in range(len(words)) for z in range(len(k_list)) for i in range(len(stopword_type)) for j in range(len(stemming))]
 
-    p = multiprocessing.Pool(processes=len(stopword_stemming))
+    p = multiprocessing.Pool(processes=16)
     p.map(generate_outputs, stopword_stemming)
     p.close()
     p.join()
