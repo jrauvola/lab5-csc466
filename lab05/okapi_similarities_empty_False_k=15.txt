@@ -1,0 +1,61 @@
+
+KNN Values: K = 15
+
+               Author  Hits  Misses  Strikes  Precision  Recall  F-Measure
+5         EricAuchard   100       0     4846   0.020218     1.0   0.039635
+0          RobinSidel     0     100        0   0.000000     0.0   0.000000
+38       MarkBendeich     0     100        0   0.000000     0.0   0.000000
+28         MureDickie     0     100        0   0.000000     0.0   0.000000
+29       RogerFillion     0     100       23   0.000000     0.0   0.000000
+30       JimGilchrist     0     100        0   0.000000     0.0   0.000000
+31        BradDorfman     0     100        0   0.000000     0.0   0.000000
+32         AlanCrosby     0     100       31   0.000000     0.0   0.000000
+33       JonathanBirt     0     100        0   0.000000     0.0   0.000000
+34    BenjaminKangLim     0     100        0   0.000000     0.0   0.000000
+35     TheresePoletti     0     100        0   0.000000     0.0   0.000000
+36          KeithWeir     0     100        0   0.000000     0.0   0.000000
+37     JoWinterbottom     0     100        0   0.000000     0.0   0.000000
+39      JaneMacartney     0     100        0   0.000000     0.0   0.000000
+26         PierreTran     0     100        0   0.000000     0.0   0.000000
+40       MatthewBunce     0     100        0   0.000000     0.0   0.000000
+41         ToddNissen     0     100        0   0.000000     0.0   0.000000
+42      PeterHumphrey     0     100        0   0.000000     0.0   0.000000
+43         TimFarrand     0     100        0   0.000000     0.0   0.000000
+44       SarahDavison     0     100        0   0.000000     0.0   0.000000
+45     GrahamEarnshaw     0     100        0   0.000000     0.0   0.000000
+46      BernardHickey     0     100        0   0.000000     0.0   0.000000
+47      KirstinRidley     0     100        0   0.000000     0.0   0.000000
+48     AlexanderSmith     0     100        0   0.000000     0.0   0.000000
+27   HeatherScoffield     0     100        0   0.000000     0.0   0.000000
+25           TanEeLyn     0     100        0   0.000000     0.0   0.000000
+1     LynnleyBrowning     0     100        0   0.000000     0.0   0.000000
+24       WilliamKazer     0     100        0   0.000000     0.0   0.000000
+2   KouroshKarimkhany     0     100        0   0.000000     0.0   0.000000
+3       MichaelConnor     0     100        0   0.000000     0.0   0.000000
+4            JoeOrtiz     0     100        0   0.000000     0.0   0.000000
+6       AaronPressman     0     100        0   0.000000     0.0   0.000000
+7         SimonCowell     0     100        0   0.000000     0.0   0.000000
+8      LynneO'Donnell     0     100        0   0.000000     0.0   0.000000
+9       EdnaFernandes     0     100        0   0.000000     0.0   0.000000
+10      KevinMorrison     0     100        0   0.000000     0.0   0.000000
+11        SamuelPerry     0     100        0   0.000000     0.0   0.000000
+12    PatriciaCommins     0     100        0   0.000000     0.0   0.000000
+13       JohnMastrini     0     100        0   0.000000     0.0   0.000000
+14         JanLopatka     0     100        0   0.000000     0.0   0.000000
+15     KevinDrawbaugh     0     100        0   0.000000     0.0   0.000000
+16        KarlPenhaul     0     100        0   0.000000     0.0   0.000000
+17         MartinWolk     0     100        0   0.000000     0.0   0.000000
+18        ScottHillis     0     100        0   0.000000     0.0   0.000000
+19        DavidLawder     0     100        0   0.000000     0.0   0.000000
+20     FumikoFujisaki     0     100        0   0.000000     0.0   0.000000
+21    MarcelMichelson     0     100        0   0.000000     0.0   0.000000
+22          NickLouth     0     100        0   0.000000     0.0   0.000000
+23   DarrenSchuettler     0     100        0   0.000000     0.0   0.000000
+49          LydiaZajc     0     100        0   0.000000     0.0   0.000000
+
+Matrix Totals
+
+Best Author:  EricAuchard
+Correct:  100
+Incorrect:  4900
+Accuracy:  0.02

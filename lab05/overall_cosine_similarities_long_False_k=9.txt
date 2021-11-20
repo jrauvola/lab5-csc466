@@ -1,0 +1,61 @@
+
+KNN Values: K = 9
+
+               Author  Hits  Misses  Strikes  Precision  Recall  F-Measure
+42      PeterHumphrey    97       3        6   0.941748    0.97   0.955665
+15     KevinDrawbaugh    97       3        7   0.932692    0.97   0.950980
+5         EricAuchard    99       1       24   0.804878    0.99   0.887892
+46      BernardHickey    98       2       28   0.777778    0.98   0.867257
+4            JoeOrtiz    89      11       20   0.816514    0.89   0.851675
+13       JohnMastrini    93       7       31   0.750000    0.93   0.830357
+27   HeatherScoffield    74      26        7   0.913580    0.74   0.817680
+0          RobinSidel    77      23       19   0.802083    0.77   0.785714
+32         AlanCrosby    84      16       30   0.736842    0.84   0.785047
+49          LydiaZajc    68      32        6   0.918919    0.68   0.781609
+2   KouroshKarimkhany    92       8       45   0.671533    0.92   0.776371
+1     LynnleyBrowning    83      17       34   0.709402    0.83   0.764977
+11        SamuelPerry    84      16       37   0.694215    0.84   0.760181
+48     AlexanderSmith    76      24       24   0.760000    0.76   0.760000
+34    BenjaminKangLim    82      18       34   0.706897    0.82   0.759259
+29       RogerFillion    79      21       32   0.711712    0.79   0.748815
+33       JonathanBirt    74      26       26   0.740000    0.74   0.740000
+20     FumikoFujisaki    83      17       44   0.653543    0.83   0.731278
+12    PatriciaCommins    71      29       25   0.739583    0.71   0.724490
+28         MureDickie    82      18       46   0.640625    0.82   0.719298
+38       MarkBendeich    70      30       27   0.721649    0.70   0.710660
+18        ScottHillis    65      35       20   0.764706    0.65   0.702703
+8      LynneO'Donnell    65      35       21   0.755814    0.65   0.698925
+45     GrahamEarnshaw    71      29       34   0.676190    0.71   0.692683
+24       WilliamKazer    81      19       54   0.600000    0.81   0.689362
+41         ToddNissen    64      36       22   0.744186    0.64   0.688172
+16        KarlPenhaul    62      38       22   0.738095    0.62   0.673913
+47      KirstinRidley    58      42       16   0.783784    0.58   0.666667
+35     TheresePoletti    66      34       32   0.673469    0.66   0.666667
+7         SimonCowell    71      29       43   0.622807    0.71   0.663551
+6       AaronPressman    74      26       52   0.587302    0.74   0.654867
+22          NickLouth    55      45       14   0.797101    0.55   0.650888
+43         TimFarrand    57      43       22   0.721519    0.57   0.636872
+10      KevinMorrison    76      24       65   0.539007    0.76   0.630705
+21    MarcelMichelson    63      37       39   0.617647    0.63   0.623762
+40       MatthewBunce    68      32       55   0.552846    0.68   0.609865
+30       JimGilchrist    52      48       20   0.722222    0.52   0.604651
+23   DarrenSchuettler    55      45       30   0.647059    0.55   0.594595
+36          KeithWeir    57      43       38   0.600000    0.57   0.584615
+39      JaneMacartney    50      50       31   0.617284    0.50   0.552486
+37     JoWinterbottom    44      56       19   0.698413    0.44   0.539877
+19        DavidLawder    43      57       18   0.704918    0.43   0.534161
+31        BradDorfman    44      56       27   0.619718    0.44   0.514620
+25           TanEeLyn    63      37      103   0.379518    0.63   0.473684
+9       EdnaFernandes    53      47       89   0.373239    0.53   0.438017
+17         MartinWolk    33      67       26   0.559322    0.33   0.415094
+14         JanLopatka    36      64       48   0.428571    0.36   0.391304
+3       MichaelConnor    33      67       38   0.464789    0.33   0.385965
+44       SarahDavison    32      68       70   0.313725    0.32   0.316832
+26         PierreTran    17      83       20   0.459459    0.17   0.248175
+
+Matrix Totals
+
+Best Author:  PeterHumphrey
+Correct:  3360
+Incorrect:  1640
+Accuracy:  0.672
