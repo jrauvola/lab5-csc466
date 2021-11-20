@@ -74,7 +74,6 @@ def print_results(data, author):
 
     #find total of list of lists data using numpy and list comprehension
     total = sum([sum(x) for x in data])
-
     T = 0
     precision = []
     recall = []
@@ -164,6 +163,7 @@ def generate_outputs(stopword_stemming):
     with open(stopword_stemming[0] + "_" + stopword_stemming[2] + "_" + str(stopword_stemming[3]) + "_k=" + str(stopword_stemming[1]) + ".txt", 'w') as f:
         with redirect_stdout(f):
             generate_knn(stopword_stemming)
+
 
     
 if __name__ == "__main__":
