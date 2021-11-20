@@ -116,6 +116,7 @@ def classifier(A, D, c, jason, attr_cards):
     correct = 0
     for i in range(sz):
         correct += confusion_matrix[i][i]
+    
     incorrect = len(D) - correct
     return confusion_matrix, correct, incorrect, dummy_vals
 
