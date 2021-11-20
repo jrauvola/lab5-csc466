@@ -5,6 +5,9 @@ import json
 import pandas as pd
 import time
 import numpy as np
+from contextlib import redirect_stdout
+from knn_implementation import print_results
+import multiprocessing
 
 def prepare_D(training_file, ground_truth_file): 
     D = pd.read_csv(training_file, sep=',', engine='c', na_filter=False, low_memory = False)
@@ -76,7 +79,6 @@ def dataset_selector(D, A, m, k, c):
 
     return new_D, new_A, new_c
 
-
 # noinspection PyBroadException
 def traverse_tree(d, A, tree):
     try:
@@ -113,26 +115,21 @@ def classifier(A, D, c, jason, attr_cards):
         expected = traverse_forest(D[i], A, trees)
         actual = D[i][c]
         confusion_matrix[dummy_vals[actual]][dummy_vals[expected]] += 1
-    correct = 0
-    for i in range(sz):
-        correct += confusion_matrix[i][i]
     
-    incorrect = len(D) - correct
-    return confusion_matrix, correct, incorrect, dummy_vals
+    return confusion_matrix, dummy_vals
 
-def main():
+def generate_RF(stopword_stemming):
+    #timer
     start = time.time()
     if len(sys.argv) != 5:
         print("usage: randomForest.py <filename.csv> m k N")
         return -1
-    csv = sys.argv[1]
-    m = int(sys.argv[2])
-    k = int(sys.argv[3])
-    N = int(sys.argv[4])
+    csv = stopword_stemming[0] + "_" + stopword_stemming[2] + "_" + str(stopword_stemming[3]) + ".csv"
+    m = 500
+    k = stopword_stemming[1]
+    N = stopword_stemming[4]
     threshold = 0.1
-    out_name = csv[:-4] + "_forest-results.txt"
-    out_file = open(out_name, "w")
-
+  
     # validation for lab5
     D, A, c, cardinalities = prepare_D(csv, "groundtruth_overall.csv")
     forest, attr_lists, card_lists = random_forest(D, A, m, k, N, threshold, c, cardinalities)
@@ -141,32 +138,38 @@ def main():
         json_str = InduceC45.create_json_str(csv, tree)
         json_obj = json.loads(json_str)
         json_objs.append(json_obj)
-    confusion_matrix, correct, incorrect, rowColDict = classifier(A, D, c, json_objs, cardinalities)
-    header = "Confusion Matrix:\n-  "
-    row_col_names = []
-    for key in rowColDict.keys():
-        header += str(key) + "  "
-        row_col_names.append(key)
-    print(header)
-    out_file.write("\n" + header + "\n")
-    # print matrix
-    counter = 0
-    for row in confusion_matrix:
-        try:
-            curr_str = str(int(row_col_names[counter])) + "  "
-        except ValueError:
-            curr_str = str(row_col_names[counter]) + "  "
-        for curr in row:
-            curr_str += str(curr) + "  "
-        print(curr_str)
-        out_file.write(curr_str + "\n")
-        counter += 1
-    out_file.close()
-    print(f"accurracy: {correct/ (correct + incorrect)}")
 
+    # chang
+    confusion_matrix, rowColDict = classifier(A, D, c, json_objs, cardinalities)
+    row_col_names = list(rowColDict.keys())
+
+    print_results(confusion_matrix, row_col_names)
+
+    # timer
     end = time.time()
-    print(f"runtime: {end - start}")
+    print("Time Taken: " + str(end - start))
+
+
+def generate_outputs(stopword_stemming):
+    with open(stopword_stemming[0] + "_" + stopword_stemming[2] + "_" + str(stopword_stemming[3]) + "_k=" + str(stopword_stemming[1]) + "_" + "trees=" + str(stopword_stemming[4]) + ".txt", 'w') as f:
+        with redirect_stdout(f):
+            generate_RF(stopword_stemming)
 
 
 if __name__ == "__main__":
-    main()
+    words = ["overall_tf_idf"]
+    k_list = [10, 15, 20]
+    num_tress = [4000, 2667, 2000]
+    stopword_type = ["medium", "mysql"]
+    stemming = [True, False]
+
+
+    #merge stopword_type and stemming into one list list of tuples list comprehension
+    stopword_stemming = [(words[0], k_list[z], stopword_type[i], stemming[j], num_tress[w]) for z in range(len(k_list)) for i in range(len(stopword_type)) for j in range(len(stemming)) for w in range(len(num_tress))]
+
+    p = multiprocessing.Pool(processes=16)
+    p.map(generate_outputs, stopword_stemming)
+    p.close()
+    p.join()
+
+
