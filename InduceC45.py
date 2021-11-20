@@ -37,11 +37,7 @@ def parse_restrictions(filename):
 
 def get_domain(D, i):
     """ Returns all possible values of A_i given D and i """
-    ret_list = []
-    for curr in D:
-        if curr[i] not in ret_list:
-            ret_list.append(curr[i])
-    return ret_list
+    return list(set([curr[i] for curr in D]))
 
 
 def entropy(D, c):
@@ -54,9 +50,7 @@ def entropy(D, c):
         for curr in D:
             if curr[c] is val:
                 count += 1
-        to_add = count / len(D)
-        to_add *= math.log(to_add, 2)
-        sum += to_add
+        sum += (count / len(D)) * math.log(count / len(D), 2)
     return -sum
 
 
@@ -65,10 +59,7 @@ def entropy_ai(D, i, c):
     dom_ai = get_domain(D, i)
     sum = 0
     for val in dom_ai:
-        D_j = []
-        for curr in D:
-            if curr[i] is val:
-                D_j.append(curr)
+        D_j = [curr for curr in D  if curr[i] is val]
         to_add = len(D_j) / len(D)
         to_add *= entropy(D_j, c)
         sum += to_add
@@ -170,13 +161,10 @@ def C45(D, A, threshold, c, attr_cards, entire_D):
             return root
         else:
             # tree construction
-            count = 0
-            index_to = 0
-            for key, value in reverse_A.items():
-                if count == Ag:
-                    index_to = key
-                count += 1
+            index_to = list(reverse_A.keys())[Ag]
+            
             r = Node(reverse_A[index_to])
+            start = time.time()
             alpha = find_best_split(D, Ag, c)
             D_plus, D_minus = split_on_alpha(D, Ag, alpha)
             minus_tree = C45(D_minus, A, threshold, c, attr_cards, entire_D)
@@ -189,11 +177,9 @@ def C45(D, A, threshold, c, attr_cards, entire_D):
 
 def classified(D, c):
     """ returns True if D[c] is same for all d in D, false otherwise"""
-    Ci = D[0][c]
-    for d in D:
-        if d[c] != Ci:
-            return None
-    return Ci
+    if len(get_domain(D, c)) == 1:
+        return get_domain(D,c)[0]    
+    return None
 
 
 def create_json_str(filename, root_node):

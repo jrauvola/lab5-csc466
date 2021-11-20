@@ -27,7 +27,7 @@ def prepare_D(training_file, ground_truth_file):
     print(f"Time to iterate over rows: {end - start}")
     
     i = 0
-    for a in D.columns:
+    for a in D.columns: #OPT
         data_attrs[a] = i
         i += 1
     print(D.columns[-1])
@@ -44,9 +44,7 @@ def random_forest(D, A, m, k, N, threshold, c, attr_cards):
     count = 0
     while count < N:
         (d, a, new_c) = dataset_selector(D, A, m, k, c)
-        curr_attr_cards = []
-        for key, value in a.items():
-            curr_attr_cards.append(attr_cards[value])
+        curr_attr_cards = [attr_cards[value] for value in a.values()]
         new_tree = InduceC45.C45(d, a, threshold, new_c, curr_attr_cards, D)
         trees.append(new_tree)
         attr_lists.append(a)
@@ -75,15 +73,13 @@ def dataset_selector(D, A, m, k, c):
     reverse_A = dict((y, x) for x, y in A.items())
     pt_indices = list(np.random.choice(len(D), k, replace=False))
     at_indices = list(np.random.choice(len(D[0]) - 2, m, replace=False))
-    if c not in at_indices:
-        at_indices.append(c)
-    new_D = list()
-    for i in pt_indices:
-        new_D.append(list([D[i][x] for x in at_indices]))
+    at_indices.append(c)
+    
+    new_D = [[D[i][x] for x in at_indices] for i in pt_indices]
 
     new_A = dict()
     count = 0
-    for i in at_indices:
+    for i in at_indices:    #might not need count
         new_A[reverse_A[i]] = i
         if i == c:
             new_c = count
