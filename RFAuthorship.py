@@ -7,10 +7,7 @@ import time
 import numpy as np
 
 def prepare_D(training_file, ground_truth_file): 
-    start = time.time()
     D = pd.read_csv(training_file, sep=',', engine='c', na_filter=False, low_memory = False)
-    end = time.time()
-    print(f"Time to read tf_idf: {end - start}")
     D = D.drop(columns=['Unnamed: 0'])
     D = D.reset_index(drop=True)
     A = pd.read_csv(ground_truth_file)
@@ -18,19 +15,11 @@ def prepare_D(training_file, ground_truth_file):
     #merge D and A into one dataframe
     D = pd.merge(D, A, left_index=True, right_index=True)
     D = D.reset_index(drop=True)
+   
+    data_list = [row for row in D.values]
 
-    data_list = []
-    data_attrs = dict()
-    start = time.time()
-    [data_list.append(row) for row in D.values]
-    end = time.time()
-    print(f"Time to iterate over rows: {end - start}")
-    
-    i = 0
-    for a in D.columns: #OPT
-        data_attrs[a] = i
-        i += 1
-    print(D.columns[-1])
+    i = list(range(len(D.columns)))
+    data_attrs = dict(zip(D.columns, i))
     c = data_attrs["author"]
     attr_cards = [0] * len(data_list[0])
     attr_cards[-1] = 50
@@ -79,7 +68,7 @@ def dataset_selector(D, A, m, k, c):
 
     new_A = dict()
     count = 0
-    for i in at_indices:    #might not need count
+    for i in at_indices:    #OPT
         new_A[reverse_A[i]] = i
         if i == c:
             new_c = count
@@ -107,8 +96,7 @@ def traverse_tree(d, A, tree):
     return -1   # this shouldn't happen
 
 def traverse_forest(d, A, trees):
-    expected = []
-    [expected.append(traverse_tree(d, A, trees[i])) for i in range(len(trees))]
+    expected = [traverse_tree(d, A, trees[i]) for i in range(len(trees))]
     return max(set(expected), key=expected.count)
 
 def classifier(A, D, c, jason, attr_cards):
@@ -119,8 +107,7 @@ def classifier(A, D, c, jason, attr_cards):
     for n in range(len(dom)):
         dummy_vals[dom[n]] = n
     sz = len(dom)
-    row = [0 for x in range(sz)]
-    confusion_matrix = [row.copy() for x in range(sz)]
+    confusion_matrix = np.zeros((sz, sz), dtype = np.float32)    
     trees = jason
     for i in range(len(D)):
         expected = traverse_forest(D[i], A, trees)
@@ -133,6 +120,7 @@ def classifier(A, D, c, jason, attr_cards):
     return confusion_matrix, correct, incorrect, dummy_vals
 
 def main():
+    start = time.time()
     if len(sys.argv) != 5:
         print("usage: randomForest.py <filename.csv> m k N")
         return -1
@@ -146,11 +134,7 @@ def main():
 
     # validation for lab5
     D, A, c, cardinalities = prepare_D(csv, "groundtruth_overall.csv")
-    print("making forest")
-    start = time.time()
     forest, attr_lists, card_lists = random_forest(D, A, m, k, N, threshold, c, cardinalities)
-    end = time.time()
-    print(f"time to make forest: {end - start}")
     json_objs = []
     for tree in forest:
         json_str = InduceC45.create_json_str(csv, tree)
@@ -159,11 +143,8 @@ def main():
     confusion_matrix, correct, incorrect, rowColDict = classifier(A, D, c, json_objs, cardinalities)
     header = "Confusion Matrix:\n-  "
     row_col_names = []
-    for key, v in rowColDict.items():
-        try:
-            header += str(int(key)) + "  "
-        except ValueError:
-            header += str(key) + "  "
+    for key in rowColDict.keys():
+        header += str(key) + "  "
         row_col_names.append(key)
     print(header)
     out_file.write("\n" + header + "\n")
@@ -181,7 +162,9 @@ def main():
         counter += 1
     out_file.close()
     print(f"accurracy: {correct/ (correct + incorrect)}")
-    sys.exit() 
+
+    end = time.time()
+    print(f"runtime: {end - start}")
 
 
 if __name__ == "__main__":

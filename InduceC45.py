@@ -219,34 +219,3 @@ def create_node_str(node):
         json_str += f'{{"decision":"{node.label}",'
         json_str += f'"p":{node.p}}}'
     return json_str
-
-
-def main():
-    if len(sys.argv) < 2:
-        print("usage: InduceC45 <TrainingSetFile.csv> [<restrictionsFile>]")
-        return -1
-    csv = sys.argv[1]
-    d, a, c, attr_cardinalities = parse_data(csv)
-
-    # enforce restrictions
-    if len(sys.argv) > 2:
-        restrictions = parse_restrictions(sys.argv[2])
-        b = dict()
-        for key, index in a.items():
-            if index in restrictions:
-                b[key] = index
-        a = b
-
-    d_tree = C45(d, a, 0.001, c, attr_cardinalities)  # need to decide threshold
-    json_str = create_json_str(csv, d_tree)
-    # print(json_str)
-    json_object = json.loads(json_str)
-    json_formatted_str = json.dumps(json_object, indent=4)
-    # print(json_formatted_str)
-
-    with open('data.json', 'w') as f:
-        json.dump(json_object, f)
-
-
-if __name__ == "__main__":
-    main()
