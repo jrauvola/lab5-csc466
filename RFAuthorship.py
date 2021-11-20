@@ -121,9 +121,7 @@ def classifier(A, D, c, jason, attr_cards):
 def generate_RF(stopword_stemming):
     #timer
     start = time.time()
-    if len(sys.argv) != 5:
-        print("usage: randomForest.py <filename.csv> m k N")
-        return -1
+
     csv = stopword_stemming[0] + "_" + stopword_stemming[2] + "_" + str(stopword_stemming[3]) + ".csv"
     m = 500
     k = stopword_stemming[1]
@@ -160,12 +158,11 @@ if __name__ == "__main__":
     words = ["overall_tf_idf"]
     k_list = [10, 15, 20]
     num_tress = [4000, 2667, 2000]
-    stopword_type = ["medium", "mysql"]
+    stopword_type = ["long", "short", "empty", "onix"]
     stemming = [True, False]
 
-
     #merge stopword_type and stemming into one list list of tuples list comprehension
-    stopword_stemming = [(words[0], k_list[z], stopword_type[i], stemming[j], num_tress[w]) for z in range(len(k_list)) for i in range(len(stopword_type)) for j in range(len(stemming)) for w in range(len(num_tress))]
+    stopword_stemming = [(words[0], z, stopword_type[i], stemming[j], w) for i in range(len(stopword_type)) for j in range(len(stemming)) for w, z in zip(k_list, num_tress)]
 
     p = multiprocessing.Pool(processes=16)
     p.map(generate_outputs, stopword_stemming)
